@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Take Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Take a Quiz</h1>
+    <input type="text" id="quizTitle" placeholder="Enter Quiz Title to Load" />
+    <button class="btn" onclick="loadQuiz()">Load Quiz</button>
+    <div id="quizArea"></div>
+  </div>
+
+  <script>
+    let currentQuiz = [];
+    let score = 0;
+
+    function loadQuiz() {
+      const title = document.getElementById("quizTitle").value.trim();
+      const quiz = localStorage.getItem("quiz-" + title);
+      if (!quiz) {
+        alert("Quiz not found!");
+        return;
+      }
+
+      currentQuiz = JSON.parse(quiz);
+      const quizArea = document.getElementById("quizArea");
+      quizArea.innerHTML = "";
+
+      currentQuiz.forEach((q, i) => {
+        quizArea.innerHTML += `
+          <p>${q.question}</p>
+          <input type="text" id="answer-${i}" placeholder="Your Answer" /><br/>
+        `;
+      });
+
+      quizArea.innerHTML += `<button class="btn" onclick="submitAnswers()">Submit</button>`;
+    }
+
+    function submitAnswers() {
+      score = 0;
+      currentQuiz.forEach((q, i) => {
+        const ans = document.getElementById(`answer-${i}`).value.trim();
+        if (ans.toLowerCase() === q.answer.toLowerCase()) {
+          score++;
+        }
+      });
+      alert("Your Score: " + score + " / " + currentQuiz.length);
+    }
+  </script>
+</body>
+</html>

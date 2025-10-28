@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Create Quiz</h1>
+    <input type="text" id="quizTitle" placeholder="Quiz Title" />
+    <div id="questions"></div>
+    <button class="btn" onclick="addQuestion()">Add Question</button>
+    <button class="btn" onclick="saveQuiz()">Save Quiz</button>
+    <button class="btn" onclick="window.location.href='index.html'">Back</button>
+  </div>
+
+  <script>
+    let questions = [];
+
+    function addQuestion() {
+      const q = prompt("Enter question:");
+      const a = prompt("Enter answer:");
+      if (q && a) {
+        questions.push({ question: q, answer: a });
+        document.getElementById("questions").innerHTML += `<p>${q}</p>`;
+      }
+    }
+
+    function saveQuiz() {
+      const title = document.getElementById("quizTitle").value.trim();
+      if (title === "") {
+        alert("Enter a quiz title!");
+        return;
+      }
+      localStorage.setItem("quiz-" + title, JSON.stringify(questions));
+      alert("Quiz saved!");
+      questions = [];
+      document.getElementById("questions").innerHTML = "";
+    }
+  </script>
+</body>
+</html>
